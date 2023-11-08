@@ -1,0 +1,7 @@
+authservice-grpc @ git+https://github.com/alexseipopov/capybaras_controller_authservice_grpc.git@main
+grpcio==1.59.2
+grpcio-tools==1.59.2
+protobuf==4.25.0
+python-dotenv==1.0.0
+school-service-grpc @ git+https://github.com/alexseipopov/capybaras_school_service_grpc.git@main
+user-service-grpc @ git+https://github.com/alexseipopov/user_service_grpc.git@main
