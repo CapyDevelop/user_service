@@ -6,10 +6,11 @@ import auth_service.authservice_pb2_grpc as auth_pb2_grpc
 import grpc
 import school_service.school_service_pb2 as school_pb2
 import school_service.school_service_pb2_grpc as school_pb2_grpc
-from dotenv import load_dotenv
 
 import user_service.user_service_pb2 as user_pb2
 import user_service.user_service_pb2_grpc as user_pb2_grpc
+from dotenv import load_dotenv
+
 
 load_dotenv()
 logging.basicConfig(level=logging.DEBUG,

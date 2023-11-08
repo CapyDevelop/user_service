@@ -2,9 +2,9 @@ import os
 from concurrent import futures
 
 import grpc
+import user_service.user_service_pb2_grpc as user_pb2_grpc
 from dotenv import load_dotenv
 
-import user_service.user_service_pb2_grpc as user_pb2_grpc
 from user_info_service import UssrSservice
 
 load_dotenv()
