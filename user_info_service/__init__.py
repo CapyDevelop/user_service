@@ -33,8 +33,13 @@ class UssrSservice(user_pb2_grpc.UserServiceServicer):
         auth_info_request = auth_pb2.TokenRequest(uuid=request.capy_uuid)
         auth_info_response = auth_service_stub.get_token_by_uuid(auth_info_request)
         logging.info("[ Get rp ] - response from auth_service")
+        if auth_info_response.status == 13:
+            logging.info("[ Get rp ] - Error response from auth_service. Token Expired ----- END -----")
+            return user_pb2.GetRpResponse(
+                status=13
+            )
         if auth_info_response.status != 0:
-            logging.info("[ Get rp ] - Error response from auth_service. ----- END -----")
+            logging.info("[ Get rp ] - Error response from auth_service. TOKEN OK ----- END -----")
             return user_pb2.GetRpResponse(
                 status=1
             )
