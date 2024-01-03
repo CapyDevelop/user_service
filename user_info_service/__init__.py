@@ -80,3 +80,17 @@ class UssrSservice(user_pb2_grpc.UserServiceServicer):
         req = db_pb2.GetAvatarRequest(uuid=uuid)
         res = db_service_stub.get_avatar(req)
         return user_pb2.GetAvatarResponse(status=res.status, description=res.description, avatar=res.avatar)
+
+    def get_peer_info(self, request, context):
+        uuid = request.request_uuid
+        nickname = request.nickname
+        req = db_pb2.GetPeerInfoRequest(request_uuid=uuid, nickname=nickname)
+        res = db_service_stub.get_peer_info(req)
+        return user_pb2.GetPeerInfoResponse(
+            status=res.status,
+            description=res.description,
+            avatar=res.avatar,
+            first_name=res.first_name,
+            last_name=res.last_name,
+            login=res.login
+        )
