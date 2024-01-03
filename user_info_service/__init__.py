@@ -3,6 +3,8 @@ import os
 
 import auth_service.authservice_pb2 as auth_pb2
 import auth_service.authservice_pb2_grpc as auth_pb2_grpc
+import db_service.db_handler_pb2 as db_pb2
+import db_service.db_handler_pb2_grpc as db_pb2_grpc
 import grpc
 import school_service.school_service_pb2 as school_pb2
 import school_service.school_service_pb2_grpc as school_pb2_grpc
@@ -24,6 +26,11 @@ school_service_channel = grpc.insecure_channel(
     f"{os.getenv('SCHOOL_SERVICE_HOST')}:{os.getenv('SCHOOL_SERVICE_PORT')}"
 )
 school_service_stub = school_pb2_grpc.SchoolServiceStub(school_service_channel)
+
+db_service_channel = grpc.insecure_channel(
+    f"{os.getenv('DB_SERVICE_HOST')}:{os.getenv('DB_SERVICE_PORT')}"
+)
+db_service_stub = db_pb2_grpc.DBServiceStub(db_service_channel)
 
 
 class UssrSservice(user_pb2_grpc.UserServiceServicer):
@@ -60,3 +67,16 @@ class UssrSservice(user_pb2_grpc.UserServiceServicer):
             status=0,
             description="Success"
         )
+
+    def set_avatar(self, request, context):
+        avatar = request.avatar
+        uuid = request.uuid
+        req = db_pb2.SetAvatarRequest(capy_uuid=uuid, avatar=avatar)
+        res = db_service_stub.set_avatar(req)
+        return user_pb2.SetAvatarResponse(status=res.status, description=res.description)
+
+    def get_avatar(self, request, context):
+        uuid = request.capy_uuid
+        req = db_pb2.GetAvatarRequest(uuid=uuid)
+        res = db_service_stub.get_avatar(req)
+        return user_pb2.GetAvatarResponse(status=res.status, description=res.description, avatar=res.avatar)
