@@ -94,3 +94,34 @@ class UssrSservice(user_pb2_grpc.UserServiceServicer):
             last_name=res.last_name,
             login=res.login
         )
+
+    def get_friend_stats(self, request, context):
+        uuid = request.capy_uuid
+        req = db_pb2.GetFriendStatsRequest(uuid=uuid)
+        res = db_service_stub.get_friend_stats(req)
+        return user_pb2.GetFriendStatsResponse(
+            status=res.status,
+            description=res.description,
+            friends=res.friends,
+            subscribers=res.subscribers,
+        )
+
+    def search_user(self, request, context):
+        uuid = request.capy_uuid
+        nickname = request.nickname
+        req = db_pb2.SearchUserRequest(uuid=uuid, nickname=nickname)
+        res = db_service_stub.search_user(req)
+        return user_pb2.SearchUserResponse(
+            status=res.status,
+            description=res.description,
+            friends=[user_pb2.SearchedUser(login=i.login, avatar=i.avatar) for i in res.friends],
+            on_platform=[user_pb2.SearchedUser(login=i.login, avatar=i.avatar) for i in res.on_platform],
+            out_platform=[user_pb2.SearchedUser(login=i.login, avatar=i.avatar) for i in res.out_platform],
+        )
+
+    def add_friend(self, request, context):
+        uuid = request.capy_uuid
+        login = request.nickname
+        req = db_pb2.AddFriendRequest(uuid=uuid, login=login)
+        res = db_service_stub.add_friend(req)
+        return user_pb2.AddFriendResponse(status=res.status, description=res.description)
